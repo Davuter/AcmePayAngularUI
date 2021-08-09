@@ -1,0 +1,53 @@
+<h1 id="tableLabel">Payment Transactions</h1>
+
+<p>This component demonstrates fetching data from the server.</p>
+
+<p *ngIf="!payments"><em>Loading...</em></p>
+
+<table class='table table-striped' aria-labelledby="tableLabel" *ngIf="payments">
+  <thead>
+    <tr>
+      <th>PaymentId</th>
+      <th>Amount</th>
+      <th>Currency</th>
+      <th>CardHolder Number</th>
+      <th>Holder Name</th>
+      <th>Order Reference Number</th>
+      <th>Status</th>
+      <th>Void Transaction</th>
+      <th>Capture Transaction</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let transaction of payments.transactions">
+      <td>{{ transaction.paymentId }}</td>
+      <td>{{ transaction.amount }}</td>
+      <td>{{ transaction.currency }}</td>
+      <td>{{ transaction.cardPan }}</td>
+      <td>{{ transaction.cardHolderName }}</td>
+      <td>{{ transaction.orderReferenceNumber }}</td>
+      <td>{{ transaction.status }}</td>
+      <td>                
+      <button class="esh-pager-item esh-pager-item--navigable"
+        id="Void"
+        [ngClass]="{'is-disabled': transaction.status == 1}"
+        (click)="voidTransaction(transaction.paymentId, transaction.orderReferenceNumber)"
+        aria-label="Void">
+         Void
+      </button>
+     </td>
+      <td>                
+      <button class="esh-pager-item esh-pager-item--navigable"
+        id="Capture"
+        [ngClass]="{'is-disabled': transaction.status == 2}"
+        (click)="captureTransaction(transaction.paymentId, transaction.orderReferenceNumber)"
+        aria-label="Capture">
+         Capture
+      </button>
+    </td>
+    </tr>
+  </tbody>
+  <tfoot>
+    <app-pager [model]="paginationInfo"  (changed)="onPageChanged($event)"></app-pager>
+  </tfoot>
+</table>
